@@ -6,6 +6,18 @@
   height: 40vmin;
   pointer-events: none;
 }
+.profile-sexy {
+  margin-top: 83px;
+  color: blueviolet;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  background-color: rgb(237, 235, 235);
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -35,4 +47,38 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.container {
+  margin: 65px auto 0 auto;
+  /* max-width: 1200px; */
+}
+
+.homecontainer {
+  margin: 65px auto 0 auto;
+  max-width: 1500px;
+}
+.nav-container {
+  margin: auto;
+}
+div.image {
+  background-image: url(https://images.pexels.com/photos/936023/pexels-photo-936023.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+  max-width: 100%;
+  height: auto;
+  text-align: justify;
+  padding-left: 20%;
+  color: darkcyan;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-style: italic;
+  font-weight: bold;
+  padding: 15%;
+  font-size: larger;
+  opacity: 0.8;
+}
+
+.top-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
 }
