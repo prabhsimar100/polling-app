@@ -3,24 +3,22 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-// import { withFirebase } from "./components/Firebase";
+import { withFirebase } from "./components/Firebase";
 // import { withAuthentication } from "./components/Session";
 
 //components
 // import Navbar from "./components/Navbar";
 
 //Pages
-// import home from "./pages/home";
 import signup from "./pages/signup";
 import login from "./pages/login";
 import profile from "./pages/profile";
-import landing from "./pages/landing";
 import forpass from "./pages/forpass"
-import create from "./pages/create"
-import running from "./pages/running"
 import passchange from "./pages/passchange"
 import completed from "./pages/completed";
-// import upload from "./pages/upload";
+import running from "./pages/running";
+import create from "./pages/create";
+import landing from "./pages/landing";
 
 const theme = createMuiTheme({
   palette: {
@@ -41,7 +39,7 @@ const theme = createMuiTheme({
 
 class App extends Component {
   componentDidUnmount(){
-    // this.props.firebase.doSignOut();
+    this.props.firebase.doSignOut();
   }
   render() {
     return (
@@ -69,5 +67,6 @@ class App extends Component {
   }
 }
 
-// export default withFirebase(withAuthentication(App));
+// export default withFirebase(App);
 export default App;
+
