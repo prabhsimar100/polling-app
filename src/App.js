@@ -3,22 +3,25 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import { withFirebase } from "./components/Firebase";
-import { withAuthentication } from "./components/Session";
+// import { withFirebase } from "./components/Firebase";
+// import { withAuthentication } from "./components/Session";
 
 //components
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
 
 //Pages
-import home from "./pages/home";
+// import home from "./pages/home";
 import signup from "./pages/signup";
 import login from "./pages/login";
 import profile from "./pages/profile";
-// import landing from "./pages/landing";
+import landing from "./pages/landing";
 import forpass from "./pages/forpass"
+import create from "./pages/create"
+import running from "./pages/running"
 import passchange from "./pages/passchange"
 import completed from "./pages/completed";
-import upload from "./pages/upload";
+// import upload from "./pages/upload";
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -38,14 +41,14 @@ const theme = createMuiTheme({
 
 class App extends Component {
   componentDidUnmount(){
-    this.props.firebase.doSignOut();
+    // this.props.firebase.doSignOut();
   }
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <Router>
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="container">
               <Switch>
                 <Route exact path="/" component={landing} />
@@ -66,4 +69,5 @@ class App extends Component {
   }
 }
 
-export default withFirebase(withAuthentication(App));
+// export default withFirebase(withAuthentication(App));
+export default App;
