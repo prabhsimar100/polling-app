@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Signup from "../components/Signup";
 // import Candidate from "../components/Candidate";
 
 
@@ -9,7 +10,7 @@ export default class signup extends Component {
         <div>
           <h1> Signup Page</h1>
         </div>
-        {/* <Candidate/> */}
+        <Signup />
       </div>
     );
   }

@@ -9,7 +9,7 @@ export default class create extends Component {
         <div>
           <h1> Create Page</h1>
         </div>
-        {/* <Candidate/> */}
+        {/* <Candidate cvanditae id="1"/> */}
       </div>
     );
   }

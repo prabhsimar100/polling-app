@@ -48,6 +48,7 @@ class App extends Component {
           <Router>
             <Navigation />
             <div className="container">
+              <h1>App</h1>
               <Switch>
                 <Route exact path="/" component={landing} />
                 <Route exact path="/signup" component={signup} />
