@@ -11,6 +11,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Alert } from 'react-alert'
 
 import { withFirebase } from "./Firebase";
 import { withRouter } from "react-router-dom";
@@ -51,11 +52,10 @@ const useStyles = {
 const INITIAL_STATE = {
   email: "",
   password: "",
-  name:"",
   error: null,
 };
 
-class SignUpBase extends Component {
+class LoginBase extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
@@ -63,28 +63,16 @@ class SignUpBase extends Component {
   onSubmit=(event)=>{
     const {email,password}=this.state;
     this.props.firebase
-      .doCreateUserWithEmailAndPassword(email, password)
-        .then(authUser => {
-          console.log(authUser.user.uid);
-          const newUser={
-            email:this.state.email,
-            name:this.state.name,
-            image:"https://www.kindpng.com/picc/m/24-248253_user-profile-default-image-png-clipart-png-download.png",
-          }
-          console.log(newUser);
-          // console.log(this.props.firebase.db.collection("users"));
-          this.props.firebase.db
-          .doc(`/users/${authUser.user.uid}`)
-          .set(newUser)
-        })
-        .then(()=>{
-          this.setState({ ...INITIAL_STATE });
-          this.props.history.push('/');
-        })
-        .catch(error => {
-          console.log(error);
-          this.setState({ error });
-        });
+    .doSignInWithEmailAndPassword(email, password)
+    .then( () => {
+        this.setState({...INITIAL_STATE});
+        this.props.history.push('/');
+    })
+    .catch((error) => {
+        console.log(error);
+        this.setState({error});
+        alert(error.message+ "\nPlease try to login again!");
+    })
 
         event.preventDefault();
 
@@ -107,22 +95,10 @@ class SignUpBase extends Component {
           <Avatar className={classes.avatar}>
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Login
           </Typography>
           <form className={classes.form} noValidate onSubmit={this.onSubmit}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Full Name"
-                  name="name"
-                  autoComplete="name"
-                  onChange={this.onChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -148,19 +124,6 @@ class SignUpBase extends Component {
                   onChange={this.onChange}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Confirm Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={this.onChange}
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -169,12 +132,12 @@ class SignUpBase extends Component {
               color="primary"
               className={classes.submit}
             >
-              Sign Up
+              Login
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="/login" variant="body2">
-                  Already have an account? Sign in
+                <Link href="/signup" variant="body2">
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>
@@ -188,6 +151,6 @@ class SignUpBase extends Component {
   }
 }
 
-const SignUp = withRouter(withFirebase(withStyles(useStyles)(SignUpBase)));
+const Login = withRouter(withFirebase(withStyles(useStyles)(LoginBase)));
 
-export default SignUp;
+export default Login;

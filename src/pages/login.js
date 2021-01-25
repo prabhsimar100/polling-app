@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import Candidate from "../components/Candidate";
+import Login from "../components/Login";
 
 
 export default class login extends Component {
@@ -9,7 +9,7 @@ export default class login extends Component {
         <div>
           <h1> Login Page</h1>
         </div>
-        {/* <Candidate/> */}
+        <Login />
       </div>
     );
   }
