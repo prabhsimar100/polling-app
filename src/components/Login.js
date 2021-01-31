@@ -80,9 +80,9 @@ class LoginBase extends Component {
 
   onChange=(event)=>{
     this.setState({ [event.target.name]: event.target.value });
-    console.log(event);
-    console.log(event.target.name);
-    console.log(event.target.value);
+    // console.log(event);
+    // console.log(event.target.name);
+    // console.log(event.target.value);
   };
 
   render() {
