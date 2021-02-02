@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-// import Candidate from "../components/Candidate";
+import Create from "../components/Create";
 
 
 export default class create extends Component {
@@ -7,8 +7,9 @@ export default class create extends Component {
     return (
       <div>
         <div>
-          <h1> Create Page</h1>
+          {/* <h1> Create Page</h1> */}
         </div>
+        <Create/>
         {/* <Candidate cvanditae id="1"/> */}
       </div>
     );

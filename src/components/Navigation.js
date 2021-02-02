@@ -26,12 +26,11 @@ class Navigation extends Component {
   constructor(props) {
     super(props);
   }  
-
   render() {
-    // console.log(this.props.authUser)
     return (
       <div>
         <div>{this.props.authUser ? NavigationAuth(this.props.firebase) : NavigationNonAuth() }</div>
+        {/* <Button onClick={()=>{console.log(this.props.authUser)}}>Check</Button> */}
       </div>
     );
   }
