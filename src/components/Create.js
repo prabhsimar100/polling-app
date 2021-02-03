@@ -12,8 +12,9 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+
+import {withAuth} from './Session';
 import { withFirebase } from "./Firebase";
-// import nextId from "react-id-generator";
 import { withRouter } from "react-router-dom";
 
 
@@ -43,11 +44,17 @@ options:[''],
 finish : "",
 error: null,
 };
+
+
+
 class Create extends Component {
 
   onSubmit=(event)=>{
+    var userId = this.props.authUser.uid;
+    console.log(userId);
     event.preventDefault();
     var newSurvey= this.props.firebase.db.collection("surveys").doc();
+    console.log(newSurvey.id);
     const surveyVal={
       question : this.state.question,
       finish:this.state.finish,
@@ -60,9 +67,6 @@ class Create extends Component {
       console.log(error);
     })
     var flag=0;
-    // if(this.state.options.length==0){
-    //   alert("\nPlease try to login again!");
-    // }
     for (var i = 0; i < this.state.options.length; i++) {
       var newOption =newSurvey.collection("options").doc();
       const optionVal={
@@ -80,10 +84,33 @@ class Create extends Component {
         console.log(error);
       })
     } 
+
+    var userRef = this.props.firebase.db.collection('users').doc(userId);
+    var ar = [];
+    var obj = {};
+    userRef.get().then((doc) => {
+      if(doc.exists)
+      {
+        obj=doc.data();
+        console.log(obj)
+        if(doc.data().surveyId)
+        {
+          ar = doc.data().surveyId;
+        }
+        ar.push(newSurvey.id)
+        obj.surveyId = ar;
+        userRef.set(obj);
+
+      }
+      else 
+      {
+        console.log("Problem");
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);})
   }
     handleQues=(event)=>{
         this.setState({ question : event.target.value });
-        console.log(this.state.question)
     }
     
     addOption = e => {
@@ -176,7 +203,6 @@ class Create extends Component {
                       variant="contained"
                       color="primary"
                       onClick={this.handleDelete(index)}
-                      // className={classes.submit}
                     >
                       Delete
                     </Button>
@@ -208,4 +234,4 @@ class Create extends Component {
       );
     }
   }
-  export default withRouter(withFirebase(withStyles(useStyles)(Create)));
+  export default withAuth(withRouter(withFirebase(withStyles(useStyles)(Create))));
