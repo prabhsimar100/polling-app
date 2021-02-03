@@ -1,13 +1,86 @@
 import React, { Component } from "react";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 
+import { withFirebase } from "./Firebase";
+// import nextId from "react-id-generator";
+import { withRouter } from "react-router-dom";
+
+
+const useStyles = {
+  paper: {
+    marginTop: "8px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: "4px",
+    backgroundColor: "#009688",
+  },
+  form: {
+    width: "100%", 
+    marginTop: "16px",
+  },
+  submit: {
+    margin: "16px 0px 8px",
+  },
+};
 
 const INITIAL_STATE = {
 question:"",
 options:[''],
-finish : "1999-12-31",
+finish : "",
 error: null,
 };
 class Create extends Component {
+
+  onSubmit=(event)=>{
+    event.preventDefault();
+    var newSurvey= this.props.firebase.db.collection("surveys").doc();
+    const surveyVal={
+      question : this.state.question,
+      finish:this.state.finish,
+    }
+    newSurvey.set(surveyVal)
+    .then(()=>{
+      console.log("Success1");
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+    var flag=0;
+    // if(this.state.options.length==0){
+    //   alert("\nPlease try to login again!");
+    // }
+    for (var i = 0; i < this.state.options.length; i++) {
+      var newOption =newSurvey.collection("options").doc();
+      const optionVal={
+        text:this.state.options[i],
+        vote:0,
+      }
+      newOption.set(optionVal)
+      .then(()=>{
+        flag++;
+        console.log(`success${i}`);
+        if(flag==this.state.options.length)
+          this.props.history.push('/');
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    } 
+  }
     handleQues=(event)=>{
         this.setState({ question : event.target.value });
         console.log(this.state.question)
@@ -47,40 +120,92 @@ class Create extends Component {
         this.state = { ...INITIAL_STATE };
     }  
     render() {
+      const { classes } = this.props;
       return (
-        <div>
-           <form>
-                <label>
-                    Question :
-                    <input type="text" name="question"
-                        onChange={this.handleQues}
-                    />
-                </label>
-                <label>
-                    Finish Time : 
-                    <input type ="date" name="finish"
-                        onChange={this.handleFinish}
-                    />
-                </label>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+           <form onSubmit={this.onSubmit}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    fullWidth
+                    id="ques"
+                    label="Question"
+                    name="question"
+                    autoComplete="question"
+                    onChange={this.handleQues}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    required
+                    Number
+                    fullWidth
+                    id="finish"
+                    label="Finish Time"
+                    InputLabelProps={{ shrink: true }}
+                    name="finish"
+                    autoComplete="finish"
+                    type = "date"
+                    onChange={this.handleFinish}
+                  />
+                </Grid>
                 <br/>
-                <h1>Options : </h1>
                 {this.state.options.map((option, index) => (
                 <span key={index}>
                     <br/>
-                    <input
-                    type="text"
-                    onChange={this.handleText(index)}
-                    value={option}
-                    />
-                    <button onClick={this.handleDelete(index)}>X</button>
+                    <Grid item xs={12}>
+                      <TextField
+                        variant="outlined"
+                        required
+                        Number
+                        fullWidth
+                        id="finish"
+                        label="Option"
+                        name="option"
+                        autoComplete="option"
+                        onChange={this.handleText(index)}
+                      />
+                    </Grid>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleDelete(index)}
+                      // className={classes.submit}
+                    >
+                      Delete
+                    </Button>
                 </span>
                 ))}
                 <br/>
-                <button onClick={this.addOption}>Add New Option</button>
-                <input type="submit" value="Submit" />
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={this.addOption}
+                  className={classes.submit}
+                >
+                  Add New Option
+                </Button>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Submit
+                </Button>
+                </Grid>
             </form>
         </div>
+        </Container>
       );
     }
   }
-  export default Create;
+  export default withRouter(withFirebase(withStyles(useStyles)(Create)));
