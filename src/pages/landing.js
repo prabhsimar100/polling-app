@@ -1,9 +1,9 @@
 import { QuestionAnswer } from "@material-ui/icons";
 import React, { Component } from "react";
 // import Candidate from "../components/Candidate";
-
 import { withFirebase } from "../components/Firebase";
 import { withAuth } from "../components/Session";
+import Ongoing from "../components/Ongoing";
 
 
 class landing extends Component 
@@ -45,21 +45,53 @@ class landing extends Component
       return ar;
     })
     .then((ar)=>{
-      // setTimeout(() => {
-      //     this.setState({surveys:ar});
-      //     console.log(this.state.surveys[0].options[0].data());
-      // }, 2000);
-      this.setState({surveys:ar});
-      console.log(this.state.surveys);
+      setTimeout(() => {
+          this.setState({surveys:ar});
+          // console.log(this.state.surveys);
+      }, 2000);
     })
   }
+
+
+  //return date in YYYY-MM-DD format
+  getCurrentDate = () => {
+    let tempDate = new Date(); 
+    let month = (tempDate.getMonth()+1);
+    if(month<=9)
+      month = '0' + month;
+    let day = (tempDate.getDate());
+    if(day<=9)
+      day = '0' + day;
+    var currDate = tempDate.getFullYear() + '-' + month + '-' + day;
+    return currDate;
+  } 
 
   render() {
     // console.log(this.state.surveys);
     return (
       <div>
+
         <div>
-          <h1> This is the Landing Page</h1>
+          {/* <h1> This is the Landing Page</h1> */}
+          {            
+            
+            this.state.surveys.map((survey) => {
+
+              var currDate = this.getCurrentDate();
+
+              if(survey.questions.data().finish>currDate)
+              {
+                // console.log("Here");
+                return <Ongoing survey={survey}/>
+                //can vote
+              }
+              else
+              {
+                //can't vote
+              }
+              // console.log(survey.questions.data());
+            })
+          }
           
         </div>
         {/* <Candidate/> */}
