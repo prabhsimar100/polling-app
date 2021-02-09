@@ -32,25 +32,26 @@ class landing extends Component
           querySnapshot.forEach((doc)=>{            
             arr.push(doc);
           })
+          const surveyTemp = {
+            questions : doc,
+            options : arr,
+          }  
+          ar.push(surveyTemp);
         })
         .catch((error) => {
           console.log(error);
         })
-        const surveyTemp = {
-          questions : doc,
-          options : arr,
-        }  
-        ar.push(surveyTemp);
-        // console.log(ar);
       })
-      this.setState({surveys : ar})
-      console.log(this.state.surveys[0].options[0]);
-      // console.log(this.state.surveys[0].options);
-      // for(var i=0;i<2;i++){
-      //   console.log("HELOO");
-      //   console.log(this.state.surveys[0].options[i]);
-      // }
-    });
+      return ar;
+    })
+    .then((ar)=>{
+      // setTimeout(() => {
+      //     this.setState({surveys:ar});
+      //     console.log(this.state.surveys[0].options[0].data());
+      // }, 2000);
+      this.setState({surveys:ar});
+      console.log(this.state.surveys);
+    })
   }
 
   render() {
